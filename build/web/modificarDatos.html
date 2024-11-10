@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Datos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> <!-- Asegúrate de enlazar tu CSS general -->
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <!-- Título de la Panadería -->
+        <div class="titulo">
+            <h5>Panadería <span><br>GetInstant</span></h5>
+        </div>
+
+        <!-- Contenedor de contactos y visitanos con perfil -->
+        <div class="contactos-visitanos">
+            <p>📞 Contáctanos: &nbsp &nbsp | &nbsp &nbsp 📍 Visítanos: </p> <br>
+            <p> &nbsp &nbsp &nbsp 55-xxxx-xxxx. &nbsp &nbsp | &nbsp &nbsp &nbsp &nbsp &nbsp Calle xxxxxxxxx </p>
+        </div>
+
+        <!-- Perfil -->
+<div class="perfil-container">
+    <span class="perfil-icono">👤</span>
+    <!-- Menú desplegable -->
+    <div id="menu-usuario" class="menu-desplegable"></div>
+</div>
+    </div>
+
+    <!-- Barra de Navegación -->
+    <nav>
+        <ul class="nav-lista">
+            <li><a href="header.html" class="nav-link">Inicio</a></li>
+            <li><a href="infNosotros.html " class="nav-link">Acerca de nosotros</a></li>
+            <li><a href="Productos.html" class="nav-link">Productos</a></li>
+            <li><a href="productosTemp.html" class="nav-link">Productos de temporada</a></li>
+            <li><a href="promociones.html" class="nav-link">Promociones</a></li>
+            <li><a href="cupones.html" class="nav-link">Cupones</a></li>
+            <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+        </ul>
+
+        <!-- Buscador -->
+<div class="buscador">
+    <form action="resultadosBusqueda.html" method="GET">
+        <button type="submit">🔍</button>
+    </form>
+</div>
+
+
+        <!-- Carrito -->
+        <div class="carrito">
+            <a href="carrito.html">🛒</a>
+        </div>
+    </nav>
+</header>
+
+<section class="modificar-datos">
+    <h2>Modificar Datos</h2>
+    <form action="procesarModificacion" method="POST" enctype="multipart/form-data">
+        <label for="nombreCompleto">Nombre Completo:</label>
+        <input type="text" id="nombreCompleto" name="nombreCompleto" required>
+
+        <label for="nombreUsuario">Nombre de Usuario:</label>
+        <input type="text" id="nombreUsuario" name="nombreUsuario" required>
+
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" required>
+
+        <label for="fotoPerfil">Foto de Perfil:</label>
+        <input type="file" id="fotoPerfil" name="fotoPerfil" accept="image/*">
+
+        <button type="submit" class="boton-modificar">Guardar Cambios</button>
+        <a href="miCuenta.html" class="boton-cancelar">Cancelar</a> <!-- Enlace para cancelar -->
+
+    </form>
+</section>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Realiza una solicitud AJAX al servlet
+        fetch("MenuUsuarioServlet")
+            .then(response => response.text())
+            .then(html => {
+                // Inserta el HTML recibido en el contenedor del menú
+                document.getElementById("menu-usuario").innerHTML = html;
+            })
+            .catch(error => {
+                console.error("Error al cargar el menú:", error);
+            });
+    });
+</script>
+
+</body>
+</html>

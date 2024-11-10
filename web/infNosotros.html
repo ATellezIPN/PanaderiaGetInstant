@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panadería GetInstant - Información</title>
+    <!-- Importar la fuente Aclonica desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <!-- Enlace a la hoja de estilos CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <!-- Título de la Panadería -->
+            <div class="titulo">
+                <h5>Panadería <span><br>GetInstant</span></h5>
+            </div>
+
+            <!-- Contenedor de contactos y visítanos -->
+            <div class="contactos-visitanos">
+                <p>📞 Contáctanos: &nbsp &nbsp | &nbsp &nbsp 📍 Visítanos: </p> <br>
+                <p> &nbsp &nbsp &nbsp 55-xxxx-xxxx. &nbsp &nbsp | &nbsp &nbsp &nbsp &nbsp &nbsp Calle xxxxxxxxx </p>
+            </div>
+            <!-- Perfil -->
+<div class="perfil-container">
+    <span class="perfil-icono">👤</span>
+    <!-- Menú desplegable -->
+    <div id="menu-usuario" class="menu-desplegable"></div>
+</div>
+         </div>   
+
+        <!-- Barra de Navegación -->
+        <nav>
+            <ul class="nav-lista">
+                <li><a href="header.html" class="nav-link">Inicio</a></li>
+                <li><a href="infNosotros.html" class="nav-link">Acerca de nosotros</a></li>
+                <li><a href="Productos.html" class="nav-link">Productos</a></li>
+                <li><a href="productosTemp.html" class="nav-link">Productos de temporada</a></li>
+                <li><a href="promociones.html" class="nav-link">Promociones</a></li>
+                <li><a href="cupones.html" class="nav-link">Cupones</a></li>
+                <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+            </ul>
+
+            <!-- Buscador -->
+<div class="buscador">
+    <form action="resultadosBusqueda.html" method="GET">
+        <button type="submit">🔍</button>
+    </form>
+</div>
+
+            <!-- Carrito -->
+            <div class="carrito">
+                <a href="carrito.html">🛒</a>
+            </div>
+        </nav>
+    </header>
+
+    <script src="barra.js"></script> 
+
+    <main>
+        <div class="main-container">
+            <!-- Sección de la imagen a la izquierda -->
+            <div class="image-container">
+                <img src="data:image/jpeg;base64,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">
+            </div>
+
+            <!-- Sección de la información (texto) -->
+            <div class="info-container">
+                <section class="intro">
+                    <h2>Bienvenidos a la Panadería GetInstant</h2>
+                    <p>Sabores tradicionales, con amor y dedicación. Desde 1927, en Panadería GetInstant nos hemos dedicado a ofrecer a nuestros clientes delicias hechas con los mejores ingredientes. Cada día, nuestro equipo pone pasión en cada detalle para brindarte el sabor perfecto en cada producto.</p>
+                </section>
+
+                <section class="info">
+                    <h2>¿Por qué elegirnos?</h2>
+                    <ul>
+                        <li><strong>Calidad artesanal:</strong> Cada uno de nuestros productos es elaborado con los mejores ingredientes.</li>
+                        <li><strong>Frescura garantizada:</strong> Todos nuestros productos se hornean el mismo día.</li>
+                        <li><strong>Variedad para todos:</strong> Ofrecemos una amplia selección que incluye panes, pasteles, galletas, y más.</li>
+                    </ul>
+                </section>
+
+                <section class="visitanos">
+                    <h2>Visítanos o Haz tu Pedido en Línea</h2>
+                    <p>No hay nada como el aroma de un pan recién horneado. Ven a visitarnos en dirección Calle xxxxxxxxx, o realiza tu pedido en línea y nuestras delicias se enviarán hasta tu casa.</p>
+                    <p><strong>Dirección:</strong> Calle xxxxxxxx, México</p>
+                    <p><strong>Teléfono:</strong> 55-xxxx-xxxx</p>
+                    <p><strong>Horario:</strong> Lunes a Sábado de 8:00am a 6:00pm</p>
+                    <p><strong>Pedido en línea:</strong> <a href="#">www.getinstant.com/pedidos</a></p>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Realiza una solicitud AJAX al servlet
+        fetch("MenuUsuarioServlet")
+            .then(response => response.text())
+            .then(html => {
+                // Inserta el HTML recibido en el contenedor del menú
+                document.getElementById("menu-usuario").innerHTML = html;
+            })
+            .catch(error => {
+                console.error("Error al cargar el menú:", error);
+            });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen del Pedido</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilo básico para el recuadro del resumen */
+        #pedido-resumen {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        /* Estilo para los botones de entrega */
+        .boton-entrega {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Centrando el texto y botones */
+        #opciones-entrega {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <!-- Encabezado -->
+</header>
+
+<main>
+    <h2>Resumen del Pedido</h2>
+    <div id="pedido-resumen">
+        <!-- Resumen de productos seleccionados se mostrará aquí -->
+    </div>
+    <p id="total"></p>
+    
+    <div id="opciones-entrega">
+        <p>Seleccione la opción de entrega:</p>
+        <button class="boton-entrega" onclick="redirigir('entregaDomicilio.html')">A Domicilio</button>
+        <button class="boton-entrega" onclick="redirigir('recogerTienda.html')">Recoger en Tienda</button>
+    </div>
+
+    <div id="opciones-pago" style="display:none;">
+        <p>Opciones de Pago:</p>
+        <select id="pago-opcion">
+            <option value="linea">Pago en Línea</option>
+            <option value="efectivo">Pago en Efectivo</option>
+        </select>
+        <button onclick="finalizarPedido()">Finalizar Pedido</button>
+    </div>
+</main>
+
+<script>
+    function getUrlParameter(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+
+    function cargarResumen() {
+        const productos = getUrlParameter('productos');
+        if (!productos) return;
+
+        fetch(`/CarritoServlet?action=resumen&productos=${productos}`)
+            .then(response => response.json())
+            .then(data => mostrarResumen(data))
+            .catch(error => console.error('Error al cargar el resumen:', error));
+    }
+
+    function mostrarResumen(productos) {
+        const resumenDiv = document.getElementById('pedido-resumen');
+        resumenDiv.innerHTML = '';
+        let total = 0;
+
+        productos.forEach(producto => {
+            total += producto.precio * producto.cantidad; // Asegúrate de que el precio y cantidad estén en el JSON
+
+            const productoDiv = document.createElement('div');
+            productoDiv.className = 'producto';
+
+            productoDiv.innerHTML = `
+                <p>Producto: ${producto.nombre}</p>
+                <p>Precio: $${producto.precio}</p>
+                <p>Cantidad: ${producto.cantidad}</p>
+            `;
+
+            resumenDiv.appendChild(productoDiv);
+        });
+
+        document.getElementById('total').textContent = `Total: $${total}`;
+    }
+
+    function redirigir(url) {
+        // Aquí puedes redirigir a las páginas de entrega
+        // window.location.href = url;
+        alert(`Redirigiendo a: ${ url}`);
+    }
+
+    function finalizarPedido() {
+        const pagoOpcion = document.getElementById("pago-opcion").value;
+        if (pagoOpcion === "linea") {
+            alert("Redirigiendo a la opción de Pago en Línea...");
+            // Aquí puedes redirigir a la página de pago en línea
+            // window.location.href = 'paginaPago.html';
+        } else {
+            alert("Pedido finalizado, recoger en tienda.");
+            // Aquí puedes redirigir a la página de confirmación de recogida
+            // window.location.href = 'confirmacionRecogida.html';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', cargarResumen);
+</script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panadería GetInstant</title>
+    <!-- Importar la fuente Aclonica desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <!-- Enlace a tu archivo CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <!-- Título de la Panadería -->
+        <div class="titulo">
+            <h5>Panadería <span><br>GetInstant</span></h5>
+        </div>
+
+        <!-- Contenedor de contactos y visitanos con perfil -->
+        <div class="contactos-visitanos">
+            <p>📞 Contáctanos: &nbsp &nbsp | &nbsp &nbsp 📍 Visítanos: </p> <br>
+            <p> &nbsp &nbsp &nbsp 55-xxxx-xxxx. &nbsp &nbsp | &nbsp &nbsp &nbsp &nbsp &nbsp Calle xxxxxxxxx </p>
+        </div>
+
+        <!-- Perfil -->
+        
+<div class="perfil-container">
+    <div id="mensaje-bienvenida"></div>
+    <span class="perfil-icono">👤</span>
+    <!-- Menú desplegable -->
+    <div id="menu-usuario" class="menu-desplegable"></div>
+</div>
+    </div>
+
+    <!-- Barra de Navegación -->
+    <nav>
+        <ul class="nav-lista">
+            <li><a href="header.html" class="nav-link">Inicio</a></li>
+            <li><a href="infNosotros.html " class="nav-link">Acerca de nosotros</a></li>
+            <li><a href="Productos.html" class="nav-link">Productos</a></li>
+            <li><a href="productosTemp.html" class="nav-link">Productos de temporada</a></li>
+            <li><a href="promociones.html" class="nav-link">Promociones</a></li>
+            <li><a href="cupones.html" class="nav-link">Cupones</a></li>
+            <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+        </ul>
+
+        <!-- Buscador -->
+<div class="buscador">
+    <form action="resultadosBusqueda.html" method="GET">
+        <button type="submit">🔍</button>
+    </form>
+</div>
+
+        <!-- Carrito -->
+        <div class="carrito">
+            <a href="carrito.html">🛒</a>
+        </div>
+    </nav>
+</header>
+    
+    <main>
+        <h2>Mensajes de Soporte</h2>
+        <div id="contenedor-mensajes"></div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("MostrarMensajesServlet")
+                .then(response => response.json())
+                .then(data => {
+                    const contenedor = document.getElementById("contenedor-mensajes");
+                    data.forEach(mensaje => {
+                        const mensajeDiv = document.createElement("div");
+                        mensajeDiv.classList.add("mensaje");
+
+                        mensajeDiv.innerHTML = `
+                            <p><strong>Usuario:</strong> ${mensaje.nombre_usuario}</p>
+                            <p><strong>Fecha:</strong> ${mensaje.fecha_envio}</p>
+                            <p><strong>Mensaje:</strong> ${mensaje.mensaje}</p>
+                        `;
+
+                        contenedor.appendChild(mensajeDiv);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error al cargar los mensajes:", error);
+                });
+        });
+    </script>
+    
+</body>
+</html>

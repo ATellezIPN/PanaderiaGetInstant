@@ -1,0 +1,805 @@
+/* Estilo general del cuerpo */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #cfac89; /* Color de fondo beige */
+    box-sizing: border-box;
+}
+p {
+    text-align: center;
+    font-size: 15px;
+    color: #42332e;
+    margin-bottom: 15px;
+    font-family: 'Aclonica', sans-serif;
+}
+
+p1 {
+    text-align: center;
+    font-size: 15px;
+    color: #42332e;
+    margin-bottom: 20px;
+    font-family: 'Aclonica', sans-serif;
+}
+
+p5 {
+    text-align: center;
+    font-size: 12px;
+    color: #42332e;
+    margin-bottom: 20px;
+    font-family: 'Aclonica', sans-serif;
+}
+
+h1 {
+    font-size: 32px;
+    color: #42332e;
+    margin-bottom: 10px;
+    font-family: 'Aclonica', sans-serif;
+    text-align: center;
+}
+
+h2 {
+    font-size: 20px;
+    color: #42332e;
+    margin-bottom: 20px;
+    font-family: 'Aclonica', sans-serif;
+    text-align: center;
+}
+
+h3 {
+    font-size: 20px;
+    color: #42332e;
+    margin-bottom: 20px;
+    font-family: 'Aclonica', sans-serif;
+    text-align: center;
+}
+
+
+.login-container, .registro-container {
+    background-color: #c47647;
+    width: 400px;
+    padding: 30px;
+    margin: 50px auto;
+    border-radius: 10px;
+}
+
+label {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 5px;
+    text-align: left;
+    color: #42332e;
+}
+
+input[type="text"], input[type="password"], input[type="email"], input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #42332e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #8a5a44;
+}
+
+a {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Encabezado */
+header {
+    background-color: #cfac89;
+    padding: 10px 12px;
+    color: #42332e;
+}
+
+/* Contenedor del encabezado */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background-color: #cfac89;
+}
+
+/* Estilo del título */
+.titulo {
+    font-family: 'Aclonica', sans-serif;
+    font-size: 26px;
+}
+
+.titulo h5 {
+    font-size: 16px;
+    margin: 0;
+    font-family: 'Aclonica', sans-serif; /* Usar la fuente Aclonica */
+    text-align: right;
+}
+
+.titulo span {
+    font-size: 28px;
+    color: #42332e;
+    font-family: 'Aclonica', sans-serif; /* Usar la fuente Aclonica */
+}
+
+/* Contactos y Visítanos sin espacios extra */
+.contactos-visitanos p {
+    margin: 0;
+    font-size: 14px; /* Ajusta el tamaño aquí si necesitas algo diferente */
+    color: #42332e;
+    font-family: 'Aclonica', sans-serif; /* Usar la fuente Aclonica */
+    text-align: right;
+    display: inline-block;
+}
+
+/* Barra de navegación */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    background-color: #c47647; /* Color de fondo marrón */
+    padding: 10px 15px;
+    color: #42332e;
+}
+
+/* Lista de navegación */
+.nav-lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-lista .nav-link {
+    font-size: 14px;
+    color: #42332e; 
+    font-family: 'Aclonica', sans-serif; 
+    padding: 5px 10px; /* Tamaño del botón, ajusta el padding según el tamaño que desees */
+    border-radius: 5px; /* Bordes redondeados, opcional */
+    display: inline-block; /* Para asegurar que se comporte como botón */
+}
+
+.nav-lista a {
+    text-decoration: none;
+    color: #000;
+    font-family: 'Aclonica', sans-serif;
+}
+
+.nav-lista li {
+    margin-right: 20px;
+}
+
+/* Estilo de los enlaces de la barra de navegación */
+.nav-lista li a {
+    color: #42332e;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'Aclonica', sans-serif;
+    padding: 10px;
+    background-color: #c47647; 
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo del buscador */
+.buscador {
+    display: flex;
+}
+
+.buscador input[type="text"] {
+    width: 130px; /* Agrandar el campo de texto */
+    padding: 3px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    margin-right: 5px;
+}
+
+.boton-buscar {
+        font-size: 24px; /* Tamaño de la fuente */
+        padding: 10px 15px; /* Espaciado interno */
+        width: 50px; /* Ancho del botón */
+        height: 50px; /* Alto del botón */
+        border: none; /* Sin borde */
+        background-color: #007BFF; /* Color de fondo */
+        color: white; /* Color del texto */
+        border-radius: 5px; /* Bordes redondeados */
+        cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    }
+
+    .boton-buscar:hover {
+        background-color: #0056b3; /* Color de fondo al pasar el mouse */
+    }
+
+/* Estilo del carrito */
+.carrito a {
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.main-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Sección de imagen a la izquierda */
+.image-container {
+    flex: 1.5;
+    padding: 10px;
+    top: 50%;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    top: 50%;
+}
+
+/* Sección de información (texto) al centro y derecha */
+.info-container {
+    flex: 2;
+    padding: 10px;
+}
+
+.info-container h2 {
+    color: #5D4037;
+}
+
+.info-container ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.info-container p, .info-container li {
+    color: #333;
+    line-height: 1.5;
+}
+
+.testimonios p {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.nav-lista li a:hover {
+    background-color: #A0522D; /* Color cuando pasas el cursor (más oscuro) */
+}
+
+.nav-lista li a.active{
+    background-color: #8B4513; 
+    color: white;
+    border-radius: 5px;
+}
+
+.redes-sociales-cuerpo {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.redes-sociales {
+    display: flex;
+    justify-content: center;
+    gap: 20px;  /* Espacio entre los íconos */
+    margin-top: 15px;
+}
+
+.icono-social img {
+    width: 50px;
+    height: 50px;
+}
+
+.redes-sociales-cuerpo h2 {
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+.icono-social {
+    margin: 0 15px;
+}
+
+.menu-desplegable {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    width: 150px;
+    text-align: left;
+}
+
+.menu-desplegable a {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    color: black;
+    font-size: 14px;
+}
+
+.menu-desplegable a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Mostrar el menú cuando se pasa sobre el contenedor */
+.perfil-container:hover .menu-desplegable {
+    display: block;
+}
+
+.perfil-container {
+    position: relative;
+    display: inline-block;
+    font-size: 32px; /* Tamaño más grande para el icono */
+    margin-left: 20px; /* Separación del texto */
+}
+
+.perfil-icono {
+    cursor: pointer;
+    font-size: inherit; /* Tamaño más grande del icono */
+}
+
+.productos-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.productos-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.producto-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.producto-imagen {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.producto-card h3 {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.producto-card p {
+    margin: 4px 0;
+}
+
+.producto-card button {
+    padding: 8px 16px;
+    margin-top: 10px;
+    background-color: #ff9900;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.producto-card button:hover {
+    background-color: #e68a00;
+}
+
+.producto-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Estilos para los cupones */
+.contenedor-cupones {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+.cupon {
+            background-color: #cfac89;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            width: 200px;
+            position: relative;
+        }
+
+.cupon:hover {
+    background-color: #42332e; /* Color al pasar el mouse */
+}
+
+.cupon img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+/* Estilos para la barra de progreso */
+.barra-progreso {
+            background-color: #ddd;
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .progreso {
+            background-color: #4CAF50;
+            height: 100%;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+        }
+.numero-cupon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #f0f0f0;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+         }
+         
+.arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #fff;
+      padding: 5px;
+      border-radius:  50%;
+      cursor: pointer;
+    }
+
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #fff;
+  border-radius: 50%; /* Asegura que sea una forma circular */
+  cursor: pointer;
+  padding: 5px; /* Reducido para un círculo más pequeño */
+  width: 30px; /* Ajusta el ancho para un círculo compacto */
+  height: 30px; /* Ajusta la altura para el círculo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); /* Opcional: sombra para resaltar */
+}
+
+.prev {
+  left: 10px; /* Posición más cercana al borde izquierdo */
+}
+
+.next {
+  right: 10px; /* Posición más cercana al borde derecho */
+}
+
+    .banner {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+    }
+
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .banner .active {
+      display: block;
+    }
+
+    .banner img:not(.active) {
+      display: none;
+    }
+    
+    .mensaje-bienvenida {
+    font-family: 'Aclonica', sans-serif; /* Fuente Aclonica */
+    color: #42332e; /* Café */
+    font-size: 1.5em; /* Tamaño más grande */
+    text-align: center;
+    margin-top: 20px;
+}
+        .foto-perfil {
+            flex: 1;
+            text-align: center;
+        }
+        .foto-perfil img {
+            width: 100px; /* Ajusta el tamaño de la imagen según sea necesario */
+            height: 100px;
+            border-radius: 50%; /* Para hacer la imagen circular */
+        }
+        .datos-cliente {
+            flex: 2;
+            text-align: left;
+            margin-left: 20px;
+        }
+        .modificar-datos {
+            width: 300px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #c47647; /* Color de fondo del formulario */
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+.info-cliente {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    background-color: #d4a373;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.foto-perfil {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e8ccb4;
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.foto-perfil img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.datos-cliente {
+    flex: 2;
+    background-color: #e8ccb4;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.datos-cliente p {
+    font-size: 1.2em;
+    margin: 10px 0;
+    color: #3c2f2f;
+}
+
+.datos-cliente #tipoUsuario {
+    color: #3c2f2f;
+    font-weight: bold;
+}
+
+.boton-modificar, .boton-cancelar {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .boton-modificar {
+            background-color: #cfac89; /* Color del botón Guardar */
+            color: #42332e;
+        }
+        .boton-cancelar {
+            background-color: #cfac89; /* Color del botón Cancelar */
+            color: #42332e;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .boton-cancelar:hover, .boton-modificar:hover {
+            opacity: 0.9;
+        }
+
+/* Estilo de carga */
+.loading {
+    display: none;
+    font-size: 1.2em;
+    color: #fff;
+    text-align: center;
+}
+
+.loading.show {
+    display: block;
+}
+
+.detalle-producto-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin: 20px;
+            gap: 20px;
+        }
+
+        .detalle-izquierda, .detalle-centro, .detalle-derecha {
+            background-color: #c47647;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .detalle-izquierda {
+            flex: 1;
+        }
+
+        .detalle-centro {
+            flex: 2;
+            text-align: center;
+        }
+
+        .detalle-derecha {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .producto-imagen {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .estrellas span {
+            color: #FFD700;
+            font-size: 1.2em;
+        }
+
+        .compra-opciones {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .descripcion {
+            margin-top: 20px;
+        }
+
+        /* Botones */
+        button {
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #agregar-carrito {
+            background-color: #cfac89;
+            color: white;
+        }
+
+        #comprar-ahora {
+            background-color: #cfac89;
+            color: white;
+        }
+        
+.boton-enviar {
+    background-color: #b37557;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.boton-enviar:hover {
+    background-color: #a66a4c;
+}
+
+/* Sección de Soporte */
+.titulo-seccion {
+    text-align: center;
+    color: #42332e;
+}
+
+.formulario-soporte {
+    max-width: 500px;
+    margin: auto;
+    background-color: #cfac89;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(66, 51, 46, 0.4);
+}
+
+.formulario-soporte label {
+    font-family: 'Aclonica', sans-serif; /* Aplica la fuente Aclonica */
+    display: block;
+    margin-top: 10px;
+}
+
+.formulario-soporte input[type="text"],
+.formulario-soporte input[type="email"],
+.formulario-soporte textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #42332e;
+    border-radius: 4px;
+    background-color: #f5e3d5;
+}
+
+.formulario-soporte input[type="text"]:focus,
+.formulario-soporte input[type="email"]:focus,
+.formulario-soporte textarea:focus {
+    outline: none;
+    border-color: #a66a4c;
+}
+
+.mensaje {
+    background-color: #cfac89;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(66, 51, 46, 0.4);
+}
+
+.mensaje p {
+    font-family: 'Aclonica', sans-serif;
+    margin: 5px 0;
+}
+
+.acceso-denegado {
+    text-align: center;
+    margin-top: 50px;
+    color: #A33;
+}
+
+.acceso-denegado .titulo-seccion {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.boton-regresar {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #cfac89;
+    color: #42332e;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.boton-regresar:hover {
+    background-color: #dcb294;
+}
+
+#producto-detalle, #carrito, #pedido-resumen, #direccion-form, #pago-form {
+    width: 50%;
+    margin: auto;
+    background: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}

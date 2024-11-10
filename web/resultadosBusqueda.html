@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panadería GetInstant</title>
+    <!-- Importar la fuente Aclonica desde Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <!-- Enlace a tu archivo CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <!-- Título de la Panadería -->
+        <div class="titulo">
+            <h5>Panadería <span><br>GetInstant</span></h5>
+        </div>
+
+        <!-- Contenedor de contactos y visitanos con perfil -->
+        <div class="contactos-visitanos">
+            <p>📞 Contáctanos: &nbsp &nbsp | &nbsp &nbsp 📍 Visítanos: </p> <br>
+            <p> &nbsp &nbsp &nbsp 55-xxxx-xxxx. &nbsp &nbsp | &nbsp &nbsp &nbsp &nbsp &nbsp Calle xxxxxxxxx </p>
+        </div>
+
+        <!-- Perfil -->
+        
+<div class="perfil-container">
+    <div id="mensaje-bienvenida"></div>
+    <span class="perfil-icono">👤</span>
+    <!-- Menú desplegable -->
+    <div id="menu-usuario" class="menu-desplegable"></div>
+</div>
+    </div>
+
+    <!-- Barra de Navegación -->
+    <nav>
+        <ul class="nav-lista">
+            <li><a href="header.html" class="nav-link">Inicio</a></li>
+            <li><a href="infNosotros.html " class="nav-link">Acerca de nosotros</a></li>
+            <li><a href="Productos.html" class="nav-link">Productos</a></li>
+            <li><a href="productosTemp.html" class="nav-link">Productos de temporada</a></li>
+            <li><a href="promociones.html" class="nav-link">Promociones</a></li>
+            <li><a href="cupones.html" class="nav-link">Cupones</a></li>
+            <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+        </ul>
+
+        <!-- Buscador -->
+<div class="buscador">
+    <form action="resultadosBusqueda.html" method="GET">
+        <button type="submit">🔍</button>
+    </form>
+</div>
+
+        <!-- Carrito -->
+        <div class="carrito">
+            <a href="carrito.html">🛒</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <h2>Resultados de la Búsqueda</h2>
+
+    <!-- Filtro de búsqueda -->
+    <form id="filtroForm" class="filtro-container">
+        <input type="text" id="query" name="query" placeholder="Buscar productos...">
+        
+        <!-- Filtro de Sabor -->
+        <select id="sabor" name="sabor">
+            <option value="">Sabor</option>
+            <option value="chocolate">Chocolate</option>
+            <option value="vainilla">Vainilla</option>
+            <option value="fresa">Fresa</option>
+            <!-- Más opciones de sabor -->
+        </select>
+
+        <!-- Filtro de Temporada -->
+        <select id="temporada" name="temporada">
+            <option value="">Temporada</option>
+            <option value="Navidad">Navidad</option>
+            <option value="Verano">Verano</option>
+            <option value="Otoño">Otoño</option>
+            <!-- Más opciones de temporada -->
+        </select>
+
+        <!-- Filtro de Precio -->
+        <select id="precio" name="precio">
+            <option value="">Precio</option>
+            <option value="1">Menos de $50</option>
+            <option value="2">$50 - $100</option>
+            <option value="3">Más de $100</option>
+        </select>
+
+        <button type="button" onclick="buscarProductos()">Buscar</button>
+    </form>
+
+    <!-- Resultados en Flexbox -->
+    <section id="resultados" class="resultados-container">
+        <!-- Los productos se cargarán aquí dinámicamente -->
+    </section>
+</main>
+
+<script>
+    function buscarProductos() {
+        const query = document.getElementById("query").value;
+        const sabor = document.getElementById("sabor").value;
+        const temporada = document.getElementById("temporada").value;
+        const precio = document.getElementById("precio").value;
+
+        // Construir la URL de solicitud
+        const url = `BusquedaServlet?query=${query}&sabor=${sabor}&temporada=${temporada}&precio=${precio}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const resultados = document.getElementById("resultados");
+                resultados.innerHTML = ""; // Limpiar resultados previos
+
+                data.forEach(producto => {
+                    const productoDiv = document.createElement("div");
+                    productoDiv.classList.add("producto");
+                    productoDiv.innerHTML = `
+                        <a href="${producto.origen === 'temp' ? 'detalleProductoTemp.html' : 'detalleProducto.html'}?id=${producto.id}">
+                            <h4>${producto.nombre}</h4>
+                        </a>
+                        <p>Precio: $${producto.precio}</p>
+                        <p>Descripción: ${producto.descripcion}</p>
+                        <p>Categoría: ${producto.categoria}</p>
+                    `;
+                    resultados.appendChild(productoDiv);
+                });
+            })
+            .catch(error => console.error("Error al cargar productos:", error));
+    }
+
+    // Realiza la búsqueda inicial sin filtros
+    buscarProductos();
+</script>
+
+<style>
+    .resultados-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .producto {
+        background-color: #c47647;
+        padding: 15px;
+        border-radius: 8px;
+        width: 200px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        color: #fff; /* Texto blanco para contraste */
+    }
+
+    .producto h4 {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+        color: #42332e;
+        font-family: 'Aclonica', sans-serif;
+    }
+
+    .producto p {
+        color: #42332e;
+        font-family: 'Aclonica', sans-serif;
+    }
+
+    /* Efecto de hover para el contenedor de productos */
+    .producto:hover {
+        background-color: #98644F; 
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+        transition: all 0.3s ease;
+    }
+</style>
+</body>
+</html>

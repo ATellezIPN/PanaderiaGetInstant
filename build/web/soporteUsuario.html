@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soporte al Cliente - Panadería GetInstant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <div class="titulo">
+            <h5>Panadería <span><br>GetInstant</span></h5>
+        </div>
+        <div class="contactos-visitanos">
+            <p>📞 Contáctanos: &nbsp &nbsp | &nbsp &nbsp 📍 Visítanos: </p> <br>
+            <p> &nbsp &nbsp &nbsp 55-xxxx-xxxx. &nbsp &nbsp | &nbsp &nbsp &nbsp &nbsp &nbsp Calle xxxxxxxxx </p>
+        </div>
+        <div class="perfil-container">
+            <span class="perfil-icono">👤</span>
+            <div id="menu-usuario" class="menu-desplegable"></div>
+        </div>
+    </div>
+    <nav>
+        <ul class="nav-lista">
+            <li><a href="header.html" class="nav-link">Inicio</a></li>
+            <li><a href="infNosotros.html" class="nav-link">Acerca de nosotros</a></li>
+            <li><a href="Productos.html" class="nav-link">Productos</a></li>
+            <li><a href="productosTemp.html" class="nav-link">Productos de temporada</a></li>
+            <li><a href="promociones.html" class="nav-link">Promociones</a></li>
+            <li><a href="cupones.html" class="nav-link">Cupones</a></li>
+            <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+        </ul>
+        <div class="buscador">
+            <button>🔍</button>
+        </div>
+        <div class="carrito">
+            <a href="carrito.html">🛒</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+    <h2 class="titulo-seccion">Soporte al cliente</h2>
+    <form class="formulario-soporte" action="EnviarMensajeSoporteServlet" method="POST">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" required>
+
+        <label for="usuario">Usuario:</label>
+        <input type="text" id="usuario" name="usuario" required>
+
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" id="correo" name="correo" required>
+
+        <label for="mensaje">¿Cómo le podemos ayudar?</label>
+        <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+
+        <button type="submit" class="boton-enviar">Enviar</button>
+    </form>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch("MenuUsuarioServlet")
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("menu-usuario").innerHTML = html;
+            })
+            .catch(error => console.error("Error al cargar el menú:", error));
+    });
+</script>
+
+</body>
+</html>

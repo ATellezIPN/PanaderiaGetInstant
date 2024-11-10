@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos del carrito y sus elementos */
+        .carrito-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .producto {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #faf3e0;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .producto img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .producto-info {
+            flex: 1;
+            padding-left: 10px;
+        }
+
+        .producto-info p {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .cantidad {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cantidad button {
+            background-color: #e88b46;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .cantidad input {
+            width: 30px;
+            text-align: center;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            padding: 3px;
+            font-size: 14px;
+        }
+
+        .producto .boton-eliminar {
+            color: red;
+            cursor: pointer;
+        }
+
+        .resumen-carrito {
+            width: 96.5%;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #f8f4e1;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .resumen-carrito p {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e88b46;
+        }
+
+        .boton-pagar {
+            background-color: #e88b46;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+        .boton-pagar:hover {
+            background-color: #d47a2e;
+        }
+
+        .boton-pagar:active {
+            background-color: #b05d23;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MI CARRITO</h1>
+    </header>
+
+    <div class="carrito-container" id="carritoContainer">
+        <!-- Aquí se cargarán los productos desde la API -->
+    </div>
+
+    <div class="resumen-carrito">
+        <div>
+            <p>Descuento: <span id="descuento">$16</span></p>
+            <p>Subtotal: <span id="subtotal">$0</span></p>
+        </div>
+        <div class="total">
+            <p>TOTAL: <span id="total">$0</span></p>
+        </div>
+    </div>
+
+    <button class="boton-pagar" onclick="procederCompra()">Ir a pagar</button>
+
+    <script>
+        // Cargar productos del carrito desde la API
+        function cargarCarrito() {
+            fetch('/api/carrito')
+                .then(response => response.json())
+                .then(data => {
+                    const carritoContainer = document.getElementById("carritoContainer");
+                    carritoContainer.innerHTML = ""; // Limpiar el contenedor
+                    let subtotal = 0;
+
+                    if (data.productos && data.productos.length > 0) {
+                        data.productos.forEach(producto => {
+                            subtotal += producto.subtotal;
+                            carritoContainer.innerHTML += `
+                                <div class="producto">
+                                    <img src="https://via.placeholder.com/50" alt="${producto.nombre}">
+                                    <div class="producto-info">
+                                        <p>${producto.nombre}</p>
+                                        <p>$${producto.precio.toFixed(2)}</p>
+                                    </div>
+                                    <div class="cantidad">
+                                        <button onclick="modificarCantidad(${producto.id}, -1)">-</button>
+                                        <input type="text" value="${producto.cantidad}" readonly>
+                                        <button onclick="modificarCantidad(${producto.id}, 1)">+</button>
+                                    </div>
+                                    <span class="boton-eliminar" onclick="eliminarProducto(${producto.id})">❌</span>
+                                </div>
+                            `;
+                        });
+                    } else {
+                        carritoContainer.innerHTML = "<p>No tienes productos en el carrito.</p>";
+                    }
+
+                    // Actualizar subtotal y total
+                    document.getElementById("subtotal").innerText = `$${subtotal.toFixed(2)}`;
+                    document.getElementById("total").innerText = `$${(subtotal - 16).toFixed(2)}`; // Ejemplo de descuento de $16
+                })
+                .catch(error => console.error("Error al cargar el carrito:", error));
+        }
+
+        // Modificar la cantidad de un producto
+        function modificarCantidad(productoId, cambio) {
+            const formData = new FormData();
+            formData.append("productoId", productoId);
+            formData.append("cambio", cambio);
+
+            fetch("/modificarCantidad", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    cargarCarrito(); // Recargar el carrito
+                } else {
+                    alert("No se pudo modificar la cantidad del producto.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        // Eliminar un producto del carrito
+        function eliminarProducto(productoId) {
+            const formData = new FormData();
+            formData.append("productoId", productoId);
+
+            fetch("/eliminarProducto", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    cargarCarrito(); // Recargar el carrito
+                } else {
+                    alert("No se pudo eliminar el producto.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        // Proceder con la compra (simulación)
+        function procederCompra() {
+            alert("Redirigiendo a la página de pago...");
+            // Aquí iría la redirección real a la página de pago
+        }
+
+        // Cargar el carrito al cargar la página
+        document.addEventListener("DOMContentLoaded", cargarCarrito);
+    </script>
+</body>
+</html>
