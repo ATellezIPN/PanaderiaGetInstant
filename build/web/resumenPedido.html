@@ -4,119 +4,141 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resumen del Pedido</title>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Estilo básico para el recuadro del resumen */
-        #pedido-resumen {
-            border: 1px solid #ccc;
+        .resumen-container {
+            margin: 20px;
             padding: 20px;
-            margin: 20px 0;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        /* Estilo para los botones de entrega */
-        .boton-entrega {
-            margin: 10px;
+        .pedido-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .pedido-total {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: right;
+            color: #e88b46;
+        }
+
+        .boton-opcion {
+            margin: 10px 0;
             padding: 10px 20px;
             font-size: 16px;
+            background-color: #e88b46;
+            color: white;
+            border: none;
+            border-radius: 6px;
             cursor: pointer;
         }
 
-        /* Centrando el texto y botones */
-        #opciones-entrega {
-            text-align: center;
-            margin-top: 20px;
+        .boton-opcion:hover {
+            background-color: #d47a2e;
         }
     </style>
 </head>
 <body>
-<header>
-    <!-- Encabezado -->
+    <header>
+    <div class="header-container">
+        <!-- Título de la Panadería -->
+        <div class="titulo">
+            <h5>Panadería <span><br>GetInstant</span></h5>
+        </div>
+
+        <!-- Contenedor de contactos y visitanos con perfil -->
+        <div class="contactos-visitanos">
+            <p>📞 Contáctanos: &nbsp &nbsp | &nbsp &nbsp 📍 Visítanos: </p> <br>
+            <p> &nbsp &nbsp &nbsp 55-xxxx-xxxx. &nbsp &nbsp | &nbsp &nbsp &nbsp &nbsp &nbsp Calle xxxxxxxxx </p>
+        </div>
+
+        <!-- Perfil -->
+        
+<div class="perfil-container">
+    <div id="mensaje-bienvenida"></div>
+    <span class="perfil-icono">👤</span>
+    <!-- Menú desplegable -->
+    <div id="menu-usuario" class="menu-desplegable"></div>
+</div>
+    </div>
+
+    <!-- Barra de Navegación -->
+    <nav>
+        <ul class="nav-lista">
+            <li><a href="header.html" class="nav-link">Inicio</a></li>
+            <li><a href="infNosotros.html " class="nav-link">Acerca de nosotros</a></li>
+            <li><a href="Productos.html" class="nav-link">Productos</a></li>
+            <li><a href="productosTemp.html" class="nav-link">Productos de temporada</a></li>
+            <li><a href="promociones.html" class="nav-link">Promociones</a></li>
+            <li><a href="cupones.html" class="nav-link">Cupones</a></li>
+            <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+        </ul>
+
+        <!-- Buscador -->
+<div class="buscador">
+    <form action="resultadosBusqueda.html" method="GET">
+        <button type="submit">🔍</button>
+    </form>
+</div>
+
+        <!-- Carrito -->
+        <div class="carrito">
+            <a href="carrito.html">🛒</a>
+        </div>
+    </nav>
 </header>
 
-<main>
-    <h2>Resumen del Pedido</h2>
-    <div id="pedido-resumen">
-        <!-- Resumen de productos seleccionados se mostrará aquí -->
-    </div>
-    <p id="total"></p>
-    
-    <div id="opciones-entrega">
-        <p>Seleccione la opción de entrega:</p>
-        <button class="boton-entrega" onclick="redirigir('entregaDomicilio.html')">A Domicilio</button>
-        <button class="boton-entrega" onclick="redirigir('recogerTienda.html')">Recoger en Tienda</button>
+    <div class="resumen-container" id="resumenContainer">
+        <!-- Aquí se cargará el resumen del pedido desde la API -->
     </div>
 
-    <div id="opciones-pago" style="display:none;">
-        <p>Opciones de Pago:</p>
-        <select id="pago-opcion">
-            <option value="linea">Pago en Línea</option>
-            <option value="efectivo">Pago en Efectivo</option>
-        </select>
-        <button onclick="finalizarPedido()">Finalizar Pedido</button>
-    </div>
-</main>
+    <button class="boton-opcion" onclick="seleccionarOpcion('domicilio')">Entrega a Domicilio</button>
+    <button class="boton-opcion" onclick="seleccionarOpcion('sucursal')">Recoger en Sucursal</button>
 
-<script>
-    function getUrlParameter(name) {
-        const params = new URLSearchParams(window.location.search);
-        return params.get(name);
+    <script>
+        // Función para cargar el resumen del pedido desde la API
+        function cargarResumen() {
+    const resumenContainer = document.getElementById("resumenContainer");
+
+    // Obtener los datos del carrito desde localStorage
+    const resumen = JSON.parse(localStorage.getItem('resumenCarrito')) || { productos: [], subtotal: 0, descuento: 0, total: 0 };
+    const { productos, subtotal, descuento, total } = resumen;
+
+    // Mostrar los productos
+    productos.forEach(producto => {
+        resumenContainer.innerHTML += `
+            <div class="pedido-item">
+                <span>${producto.nombre}</span>
+                <span>${producto.cantidad} x $${producto.precio.toFixed(2)}</span>
+            </div>`;
+    });
+
+    // Mostrar el subtotal, descuento y total
+    resumenContainer.innerHTML += `
+        <div class="pedido-total">
+            <p>Subtotal: $${subtotal}</p>
+            <p>Descuento: -$${descuento}</p>
+            <p><strong>Total: $${total}</strong></p>
+        </div>`;
+}
+
+        // Función para manejar las opciones de entrega
+        function seleccionarOpcion(opcion) {
+    if (opcion === 'domicilio') {
+        window.location.href = 'formularioDomicilio.html';
+    } else if (opcion === 'sucursal') {
+        window.location.href = 'formularioSucursal.html';
     }
+}
 
-    function cargarResumen() {
-        const productos = getUrlParameter('productos');
-        if (!productos) return;
-
-        fetch(`/CarritoServlet?action=resumen&productos=${productos}`)
-            .then(response => response.json())
-            .then(data => mostrarResumen(data))
-            .catch(error => console.error('Error al cargar el resumen:', error));
-    }
-
-    function mostrarResumen(productos) {
-        const resumenDiv = document.getElementById('pedido-resumen');
-        resumenDiv.innerHTML = '';
-        let total = 0;
-
-        productos.forEach(producto => {
-            total += producto.precio * producto.cantidad; // Asegúrate de que el precio y cantidad estén en el JSON
-
-            const productoDiv = document.createElement('div');
-            productoDiv.className = 'producto';
-
-            productoDiv.innerHTML = `
-                <p>Producto: ${producto.nombre}</p>
-                <p>Precio: $${producto.precio}</p>
-                <p>Cantidad: ${producto.cantidad}</p>
-            `;
-
-            resumenDiv.appendChild(productoDiv);
-        });
-
-        document.getElementById('total').textContent = `Total: $${total}`;
-    }
-
-    function redirigir(url) {
-        // Aquí puedes redirigir a las páginas de entrega
-        // window.location.href = url;
-        alert(`Redirigiendo a: ${ url}`);
-    }
-
-    function finalizarPedido() {
-        const pagoOpcion = document.getElementById("pago-opcion").value;
-        if (pagoOpcion === "linea") {
-            alert("Redirigiendo a la opción de Pago en Línea...");
-            // Aquí puedes redirigir a la página de pago en línea
-            // window.location.href = 'paginaPago.html';
-        } else {
-            alert("Pedido finalizado, recoger en tienda.");
-            // Aquí puedes redirigir a la página de confirmación de recogida
-            // window.location.href = 'confirmacionRecogida.html';
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', cargarResumen);
-</script>
+        document.addEventListener("DOMContentLoaded", cargarResumen);
+    </script>
 </body>
 </html>

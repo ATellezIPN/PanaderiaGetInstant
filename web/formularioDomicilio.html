@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrega a Domicilio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+    <div class="header-container">
+        <!-- Título de la Panadería -->
+        <div class="titulo">
+            <h5>Panadería <span><br>GetInstant</span></h5>
+        </div>
+
+        <!-- Contenedor de contactos y visitanos con perfil -->
+        <div class="contactos-visitanos">
+            <p>📞 Contáctanos: &nbsp &nbsp | &nbsp &nbsp 📍 Visítanos: </p> <br>
+            <p> &nbsp &nbsp &nbsp 55-xxxx-xxxx. &nbsp &nbsp | &nbsp &nbsp &nbsp &nbsp &nbsp Calle xxxxxxxxx </p>
+        </div>
+
+        <!-- Perfil -->
+        
+<div class="perfil-container">
+    <div id="mensaje-bienvenida"></div>
+    <span class="perfil-icono">👤</span>
+    <!-- Menú desplegable -->
+    <div id="menu-usuario" class="menu-desplegable"></div>
+</div>
+    </div>
+
+    <!-- Barra de Navegación -->
+    <nav>
+        <ul class="nav-lista">
+            <li><a href="header.html" class="nav-link">Inicio</a></li>
+            <li><a href="infNosotros.html " class="nav-link">Acerca de nosotros</a></li>
+            <li><a href="Productos.html" class="nav-link">Productos</a></li>
+            <li><a href="productosTemp.html" class="nav-link">Productos de temporada</a></li>
+            <li><a href="promociones.html" class="nav-link">Promociones</a></li>
+            <li><a href="cupones.html" class="nav-link">Cupones</a></li>
+            <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+        </ul>
+
+        <!-- Buscador -->
+<div class="buscador">
+    <form action="resultadosBusqueda.html" method="GET">
+        <button type="submit">🔍</button>
+    </form>
+</div>
+
+        <!-- Carrito -->
+        <div class="carrito">
+            <a href="carrito.html">🛒</a>
+        </div>
+    </nav>
+</header>
+    <main>
+        <h1>Formulario de Entrega a Domicilio</h1>
+        <p>Por favor, complete los datos para la entrega a domicilio. <strong>Solo aceptamos pagos en efectivo.</strong></p>
+        <form id="formDomicilio">
+            <label>Nombre Completo:</label>
+            <input type="text" id="nombre" required>
+            <label>Teléfono:</label>
+            <input type="tel" id="telefono" required>
+            <label>Dirección:</label>
+            <input type="text" id="direccion" required>
+            <label>Referencias:</label>
+            <input type="text" id="referencias" required>
+        </form>
+        <button onclick="cancelarPedido()">Cancelar Pedido</button>
+        <button onclick="terminarPedido()">Terminar Pedido</button>
+    </main>
+    <script>
+        function cancelarPedido() {
+            alert('Pedido cancelado.');
+            localStorage.removeItem('resumenCarrito');
+            window.location.href = 'carrito.html'; // Redirige al carrito
+        }
+
+        function terminarPedido() {
+    const resumen = JSON.parse(localStorage.getItem('resumenCarrito')) || { productos: [] };
+    const usuarioId = localStorage.getItem('usuarioId'); // Asume que el ID del usuario está en localStorage
+
+    // Preparar los datos para enviar al backend
+    const productoIds = resumen.productos.map(producto => producto.id);
+    const cantidades = resumen.productos.map(producto => producto.cantidad);
+    const precios = resumen.productos.map(producto => producto.precio);
+
+    const formData = new FormData();
+    formData.append('usuarioId', usuarioId);
+    formData.append('total', resumen.total);
+    productoIds.forEach(id => formData.append('productoIds[]', id));
+    cantidades.forEach(cantidad => formData.append('cantidades[]', cantidad));
+    precios.forEach(precio => formData.append('precios[]', precio));
+
+    fetch('/terminarPedido', {
+        method: 'POST',
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert('Pedido completado correctamente.');
+                localStorage.removeItem('resumenCarrito');
+                window.location.href = 'gracias.html'; // Página de agradecimiento
+            } else {
+                alert('Error al completar el pedido.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un problema al procesar tu pedido.');
+        });
+}
+    </script>
+</body>
+</html>

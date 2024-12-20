@@ -42,6 +42,7 @@ public class MenuUsuarioServlet extends HttpServlet {
             out.println("        <a href=\"agregarProducto.html\" class=\"admin-option\">Agregar producto</a>");
             out.println("        <a href=\"modificarProducto.html\" class=\"admin-option\">Modificar producto</a>");
             out.println("        <a href=\"mensajes.html\" class=\"admin-option\">Mensaje de soporte</a>");
+            out.println("        <a href=\"pedidos.html\" class=\"admin-option\">Pedidos de clientes</a>");
         }
 
         out.println("    </div>");

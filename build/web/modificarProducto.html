@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Producto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Aclonica&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Aclonica', sans-serif;
+            background-color: #f3e2d9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #d9a067;
+            padding: 15px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            width: 80%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #d9a067;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #c68a4e;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Modificar Producto</h1>
+    </header>
+
+    <div class="container">
+        <div class="form-group">
+            <label for="tabla">Seleccionar tabla</label>
+            <select id="tabla">
+                <option value="productos">Productos</option>
+                <option value="prodTemp">Productos Temporada</option>
+                <option value="promociones">Promociones</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="producto">Seleccionar producto</label>
+            <select id="producto"></select>
+        </div>
+
+        <form id="formModificar">
+            <div id="formContenido">
+                <!-- Campos dinámicos según la tabla seleccionada -->
+            </div>
+
+            <div class="buttons">
+                <button type="button" class="button" onclick="enviarFormulario()">Modificar Producto</button>
+                <button type="button" class="button" onclick="cancelar()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const formContenido = document.getElementById('formContenido');
+        const tablaSelect = document.getElementById('tabla');
+        const productoSelect = document.getElementById('producto');
+
+        tablaSelect.addEventListener('change', cargarProductos);
+
+        productoSelect.addEventListener('change', cargarFormulario);
+
+        function cargarProductos() {
+            const tabla = tablaSelect.value;
+
+            fetch(`/ObtenerProductosServlet?tabla=${tabla}`)
+                .then(response => response.json())
+                .then(data => {
+                    productoSelect.innerHTML = '';
+                    data.productos.forEach(producto => {
+                        const option = document.createElement('option');
+                        option.value = producto.id;
+                        option.textContent = `${producto.id} - ${producto.nombre}`;
+                        productoSelect.appendChild(option);
+                    });
+
+                    cargarFormulario(); // Cargar el formulario del primer producto
+                })
+                .catch(error => console.error('Error al cargar productos:', error));
+        }
+
+        function cargarFormulario() {
+            const tabla = tablaSelect.value;
+            const productoId = productoSelect.value;
+
+            fetch(`/ObtenerProductoServlet?tabla=${tabla}&id=${productoId}`)
+                .then(response => response.json())
+                .then(producto => {
+                    formContenido.innerHTML = '';
+
+                    if (tabla === 'productos' || tabla === 'prodTemp') {
+                        formContenido.innerHTML = `
+                            <div class="form-group"><label for="nombre">Nombre</label><input type="text" id="nombre" name="nombre" value="${producto.nombre}"></div>
+                            <div class="form-group"><label for="precio">Precio</label><input type="number" id="precio" name="precio" value="${producto.precio}"></div>
+                            <div class="form-group"><label for="stock">Unidades</label><input type="number" id="stock" name="stock" value="${producto.stock}"></div>
+                            <div class="form-group"><label for="categoria">Categoría</label><input type="text" id="categoria" name="categoria" value="${producto.categoria}"></div>
+                            <div class="form-group"><label for="descripcion">Descripción</label><textarea id="descripcion" name="descripcion">${producto.descripcion}</textarea></div>
+                            <div class="form-group"><label for="foto">Foto</label><input type="file" id="foto" name="foto"></div>`;
+                    } else if (tabla === 'promociones') {
+                        formContenido.innerHTML = `
+                            <div class="form-group"><label for="nombre">Nombre</label><input type="text" id="nombre" name="nombre" value="${producto.nombre}"></div>
+                            <div class="form-group"><label for="descripcion">Descripción</label><textarea id="descripcion" name="descripcion">${producto.descripcion}</textarea></div>
+                            <div class="form-group"><label for="fecha_inicio">Fecha Inicio</label><input type="date" id="fecha_inicio" name="fecha_inicio" value="${producto.fecha_inicio}"></div>
+                            <div class="form-group"><label for="fecha_fin">Fecha Fin</label><input type="date" id="fecha_fin" name="fecha_fin" value="${producto.fecha_fin}"></div>
+                            <div class="form-group"><label for="producto_id">ID Producto Relacionado</label><input type="number" id="producto_id" name="producto_id" value="${producto.producto_id}"></div>
+                            <div class="form-group"><label for="precio">Precio</label><input type="number" id="precio" name="precio" value="${producto.precio}"></div>
+                            <div class="form-group"><label for="stock">Unidades</label><input type="number" id="stock" name="stock" value="${producto.stock}"></div>
+                            <div class="form-group"><label for="foto">Foto</label><input type="file" id="foto" name="foto"></div>`;
+                    }
+                })
+                .catch(error => console.error('Error al cargar el producto:', error));
+        }
+
+        function enviarFormulario() {
+            const tabla = tablaSelect.value;
+            const productoId = productoSelect.value;
+            const formData = new FormData(document.querySelector('#formModificar'));
+            formData.append('tabla', tabla);
+            formData.append('id', productoId);
+
+            fetch('/ModificarProductoServlet', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.mensaje);
+                    if (data.success) location.reload();
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function cancelar() {
+            if (confirm("¿Estás seguro de cancelar?")) {
+                window.location.href = '/';
+            }
+        }
+
+        // Carga inicial
+        cargarProductos();
+    </script>
+</body>
+</html>

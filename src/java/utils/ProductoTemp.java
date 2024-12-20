@@ -1,14 +1,19 @@
 package utils;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 
 public class ProductoTemp {
+
+    public ProductoTemp(int aInt, String string, double aDouble, String string1, String string2, String string3, int aInt1) {
+    }
     private int id;
     private String nombre;
     private BigDecimal precio;
     private String descripcion;
     private String categoria;
     private String foto;
+    private int stock;
 
     // Getters y Setters
     public int getId() {
@@ -57,5 +62,13 @@ public class ProductoTemp {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+    
+    public int getStock() {
+        return stock;
+    }
+    
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 }

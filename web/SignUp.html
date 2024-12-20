@@ -11,18 +11,26 @@
     <h1>Panificadora GetInstant</h1>
     <h2>Registro</h2>
     <div class="registro-container">
+        <!-- Mostrar error si el usuario ya existe -->
+        <% 
+            String error = request.getParameter("error");
+            if ("usuarioExiste".equals(error)) { 
+        %>
+            <p class="error">El nombre de usuario ya está en uso. Por favor, elige otro.</p>
+        <% } %>
+
         <form action="SignUpServlet" method="post">
             <label for="nombre">Nombre completo</label>
-            <input type="text" id="nombre" name="nombre" required>
+            <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre completo" required>
 
             <label for="correo">Correo electrónico</label>
-            <input type="email" id="correo" name="correo" required>
+            <input type="email" id="correo" name="correo" placeholder="correo@ejemplo.com" required>
 
             <label for="usuario">Nombre de usuario</label>
-            <input type="text" id="usuario" name="usuario" required>
+            <input type="text" id="usuario" name="usuario" placeholder="Ingresa tu nombre de usuario" required>
 
             <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" placeholder="Crea tu contraseña" required>
 
             <button type="submit">Registrar</button>
         </form>

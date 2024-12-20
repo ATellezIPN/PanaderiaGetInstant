@@ -62,7 +62,7 @@
             <div class="compra-opciones">
                 <label for="cantidad">Cantidad:</label>
                 <select id="cantidad" name="cantidad"></select>
-                <button onclick="agregarAlCarrito(null, null, 3, 1)">Agregar al carrito</button>
+                <button onclick="agregarAlCarrito(promocionId, cantidadSeleccionada)">Agregar al carrito</button>
                 <button onclick="comprarAhora()">Comprar Ahora</button>
             </div>
             <div class="descripcion">
@@ -79,25 +79,38 @@
     </section>
 
     <script>
-    // Obtiene el ID del usuario en sesión y lo asigna a la constante usuarioId
-    function agregarAlCarrito(productoId) {
-    const formData = new FormData();
-    formData.append("productoId", productoId);
-    formData.append("cantidad", 1); // Asumimos que agregas 1 unidad por defecto
+    function agregarAlCarrito(promocionId, cantidad = 1) {
+    if (!promocionId || promocionId <= 0 || cantidad <= 0) {
+        alert("Promoción o cantidad no válidos.");
+        return;
+    }
 
-    fetch("/agregarAlCarrito", {  // Aquí cambias la URL
+    const payload = {
+        promocionId: promocionId, // Incluido promocionId
+        cantidad: cantidad
+    };
+
+    fetch("/agregarAlCarrito", {
         method: "POST",
-        body: formData
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
     })
-    .then(response => {
-        if (response.ok) {
-            alert("Producto agregado al carrito.");
-            // Opcional: Recargar el carrito o actualizarlo visualmente
-        } else {
-            alert("Error al agregar el producto al carrito.");
-        }
-    })
-    .catch(error => console.error("Error:", error));
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Error al agregar al carrito. Es posible que debas iniciar sesión.");
+            }
+        })
+        .then(data => {
+            alert(data.message || "Producto agregado al carrito exitosamente.");
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Hubo un problema al agregar el producto al carrito.");
+        });
 }
 
 // Función para simular la compra directa

@@ -14,8 +14,8 @@
                 <h5>Panadería <span><br>GetInstant</span></h5>
             </div>
             <div class="contactos-visitanos">
-                <p>📞 Contáctanos: &nbsp &nbsp | &nbsp &nbsp 📍 Visítanos: </p><br>
-                <p> &nbsp &nbsp &nbsp 55-xxxx-xxxx. &nbsp &nbsp | &nbsp &nbsp &nbsp &nbsp &nbsp Calle xxxxxxxxx </p>
+                <p>📞 Contáctanos: &nbsp;&nbsp; | &nbsp;&nbsp; 📍 Visítanos:</p><br>
+                <p>&nbsp;&nbsp;&nbsp; 55-xxxx-xxxx &nbsp;&nbsp; | &nbsp;&nbsp; Calle xxxxxxxxx</p>
             </div>
             <div class="perfil-container">
                 <span class="perfil-icono">👤</span>
@@ -32,12 +32,11 @@
                 <li><a href="cupones.html" class="nav-link">Cupones</a></li>
                 <li><a href="contacto.html" class="nav-link">Contacto</a></li>
             </ul>
-            <!-- Buscador -->
-<div class="buscador">
-    <form action="resultadosBusqueda.html" method="GET">
-        <button type="submit">🔍</button>
-    </form>
-</div>
+            <div class="buscador">
+                <form action="resultadosBusqueda.html" method="GET">
+                    <button type="submit">🔍</button>
+                </form>
+            </div>
             <div class="carrito">
                 <a href="carrito.html">🛒</a>
             </div>
@@ -45,29 +44,22 @@
     </header>
     
     <main class="detalle-producto-container">
-        <!-- Imagen a la izquierda -->
         <div class="detalle-izquierda">
             <img id="producto-imagen" alt="Imagen del producto" class="producto-imagen">
         </div>
-
-        <!-- Información del producto en el centro -->
         <div class="detalle-centro">
             <h2 id="producto-nombre">Nombre del Producto</h2>
-            <div id="producto-calificaciones" class="estrellas">
-                <!-- Calificaciones dinámicas con estrellas -->
-            </div>
+            <div id="producto-calificaciones" class="estrellas"></div>
             <p id="producto-precio">Precio: $0.00</p>
             <p id="producto-stock"></p>
             <p id="cupon-disponible"></p>
         </div>
-
-        <!-- Botones, combobox y descripción a la derecha -->
         <div class="detalle-derecha">
             <div class="compra-opciones">
                 <label for="cantidad">Cantidad:</label>
                 <select id="cantidad" name="cantidad"></select>
-                <button onclick="agregarAlCarrito(null, 2, null, 1)">Agregar al carrito</button>
-                <button onclick="comprarAhora()">Comprar Ahora</button>
+                <button id="btn-agregar-carrito">Agregar al carrito</button>
+                <button id="btn-comprar-ahora">Comprar Ahora</button>
             </div>
             <div class="descripcion">
                 <h3>Descripción del artículo</h3>
@@ -77,85 +69,82 @@
     </main>
 
     <script>
-    function agregarAlCarrito(productoId) {
-    const formData = new FormData();
-    formData.append("productoId", productoId);
-    formData.append("cantidad", 1); // Asumimos que agregas 1 unidad por defecto
+        let productoTempId; // Usamos productoTempId de forma consistente
 
-    fetch("/agregarAlCarrito", {  // Aquí cambias la URL
-        method: "POST",
-        body: formData
-    })
-    .then(response => {
-        if (response.ok) {
-            alert("Producto agregado al carrito.");
-            // Opcional: Recargar el carrito o actualizarlo visualmente
-        } else {
-            alert("Error al agregar el producto al carrito.");
+        async function agregarAlCarritoTemp() {
+            const cantidad = parseInt(document.getElementById('cantidad').value, 10);
+
+            if (!productoTempId || cantidad <= 0) {
+                alert("Selecciona un producto de temporada y una cantidad válida.");
+                return;
+            }
+
+            const payload = {
+                productoTempId, // Usamos productoTempId
+                cantidad
+            };
+
+            try {
+                const response = await fetch("/Panaderia/agregarAlCarritoTemp", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `Error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                alert(data.message || "Producto agregado correctamente.");
+            } catch (error) {
+                console.error("Error al procesar la solicitud:", error.message);
+                alert("Error: " + (error.message || "No se pudo procesar la solicitud. Intenta nuevamente."));
+            }
         }
-    })
-    .catch(error => console.error("Error:", error));
-}
 
-// Función para simular la compra directa
-function comprarAhora() {
-    // Aquí podrías tener lógica adicional para un proceso de compra rápido
-    // Esto agrega un producto "paseo" al carrito con una cantidad de 1
-    agregarAlCarrito(1, 1);
-    window.location.href = 'carrito.jsp'; // Redirige directamente al carrito
-}
-    </script>
-    
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const productoId = urlParams.get('id');
-        
-        if (productoId) {
-            fetch(`DetalleProdTempServlet?id=${productoId}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Asigna los detalles del producto al HTML
-                    document.getElementById('producto-imagen').src = data.foto;
-                    document.getElementById('producto-nombre').textContent = data.nombre;
-                    document.getElementById('producto-precio').textContent = `Precio: $${data.precio}`;
-                    document.getElementById('producto-stock').textContent = `Stock: ${data.stock} piezas`;
-                    document.getElementById('producto-descripcion').textContent = data.descripcion;
-                    document.getElementById('cupon-disponible').textContent = data.cuponDisponible ? 'Cupón disponible: Sí' : 'Cupón disponible: No';
+        async function cargarDetallesProducto() {
+            const urlParams = new URLSearchParams(window.location.search);
+            productoTempId = parseInt(urlParams.get('id'), 10); // Usamos productoTempId
 
-                    // Muestra las calificaciones en estrellas
-                    const calificacionesContainer = document.getElementById('producto-calificaciones');
-                    calificacionesContainer.innerHTML = ''; // Limpia el contenedor antes de agregar las estrellas
-                    for (let i = 1; i <= 5; i++) {
-                        const estrella = document.createElement('span');
-                        estrella.textContent = i <= data.calificacion ? '★' : '☆';
-                        calificacionesContainer.appendChild(estrella);
-                    }
+            if (!productoTempId) {
+                alert("ID de producto no válido en la URL.");
+                return;
+            }
 
-                    // Genera las opciones de cantidad según el stock disponible
-                    const selectCantidad = document.getElementById('cantidad');
-                    selectCantidad.innerHTML = ''; // Limpia las opciones anteriores
-                    for (let i = 1; i <= data.stock; i++) {
-                        const option = document.createElement('option');
-                        option.value = i;
-                        option.textContent = i;
-                        selectCantidad.appendChild(option);
-                    }
-                })
-                .catch(error => console.error("Error al cargar los detalles del producto:", error));
+            try {
+                const response = await fetch(`/Panaderia/DetalleProdTempServlet?id=${productoTempId}`);
+                if (!response.ok) {
+                    throw new Error("Producto no encontrado o error en el servidor.");
+                }
+
+                const data = await response.json();
+                document.getElementById('producto-imagen').src = data.foto || "placeholder.jpg";
+                document.getElementById('producto-nombre').textContent = data.nombre;
+                document.getElementById('producto-precio').textContent = `Precio: $${data.precio}`;
+                document.getElementById('producto-stock').textContent = `Stock: ${data.stock} piezas`;
+                document.getElementById('producto-descripcion').textContent = data.descripcion;
+                document.getElementById('cupon-disponible').textContent = data.cuponDisponible ? 'Cupón disponible: Sí' : 'Cupón disponible: No';
+
+                const selectCantidad = document.getElementById('cantidad');
+                selectCantidad.innerHTML = "";
+                for (let i = 1; i <= data.stock; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i;
+                    selectCantidad.appendChild(option);
+                }
+            } catch (error) {
+                console.error("Error al cargar detalles del producto:", error.message);
+                alert("No se pudo cargar el producto. Intenta nuevamente.");
+            }
         }
-    });
-    </script>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch("MenuUsuarioServlet")
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById("menu-usuario").innerHTML = html;
-                })
-                .catch(error => console.error("Error al cargar el menú:", error));
-        });
+
+        document.getElementById('btn-agregar-carrito').addEventListener('click', agregarAlCarritoTemp);
+        document.addEventListener('DOMContentLoaded', cargarDetallesProducto);
     </script>
 </body>
 </html>

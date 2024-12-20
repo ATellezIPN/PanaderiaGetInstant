@@ -3,6 +3,9 @@ package utils;
 import java.sql.Date;
 
 public class Promocion {
+
+    public Promocion(int aInt, String string, String string1, double aDouble, Date date, Date date1) {
+    }
     private int id;
     private String nombre;
     private String descripcion;

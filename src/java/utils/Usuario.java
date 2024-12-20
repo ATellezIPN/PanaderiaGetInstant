@@ -7,14 +7,14 @@ public class Usuario {
     private String usuario;
     private String password;
     private String fotoPerfil;
-    private String tipoUsuario;
+    private int tipoUsuario;
 
     // Constructor vacío
     public Usuario() {
     }
 
     // Constructor con parámetros
-    public Usuario(int id, String nombre, String correo, String usuario, String password, String tipoUsuario, String fotoPerfil) {
+    public Usuario(int id, String nombre, String correo, String usuario, String password, int tipoUsuario, String fotoPerfil) {
         this.id = id; // Asigna el id correctamente
         this.nombre = nombre;
         this.correo = correo;
@@ -81,11 +81,11 @@ public class Usuario {
         this.fotoPerfil = fotoPerfil;
     }
 
-    public String getTipoUsuario() {
+    public int getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(String tipoUsuario) {
+    public void setTipoUsuario(int tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 }

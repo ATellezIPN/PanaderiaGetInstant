@@ -9,8 +9,9 @@ public class ProductoCarrito {
         this.cantidad = cantidad;
     }
 
-    public ProductoCarrito(int aInt, String string, double aDouble, int aInt0) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ProductoCarrito(int productoId, String nombre, double precio, int cantidad) {
+        this.producto = new Producto(productoId, nombre, precio);
+        this.cantidad = cantidad;
     }
 
     public Producto getProducto() {

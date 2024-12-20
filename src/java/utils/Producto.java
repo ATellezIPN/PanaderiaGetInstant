@@ -7,21 +7,28 @@ public class Producto {
     private String descripcion;
     private String categoria;
     private String foto;
-    
-    public Producto(int id, String nombre, double precio, String descripcion, String categoria, String foto) {
+    private int stock;
+
+    public Producto(int id, String nombre, double precio) {
+        this.id = id;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.descripcion = ""; // Valor por defecto
+        this.categoria = ""; // Valor por defecto
+        this.foto = ""; // Valor por defecto
+        this.stock = 0; // Valor por defecto
+    }
+
+    public Producto(int id, String nombre, double precio, String descripcion, String categoria, String foto, int stock) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
         this.categoria = categoria;
         this.foto = foto;
+        this.stock = stock;
     }
 
-    public Producto(int productoId, String nombre_Producto, double d, String descripción) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    // Getters y Setters
     public int getId() {
         return id;
     }
@@ -69,4 +76,13 @@ public class Producto {
     public void setFoto(String foto) {
         this.foto = foto;
     }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 }
+ 

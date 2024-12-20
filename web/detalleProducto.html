@@ -45,28 +45,21 @@
     </header>
     
     <main class="detalle-producto-container">
-        <!-- Imagen a la izquierda -->
+        <!-- Detalle del producto -->
         <div class="detalle-izquierda">
             <img id="producto-imagen" alt="Imagen del producto" class="producto-imagen">
         </div>
-
-        <!-- Información del producto en el centro -->
         <div class="detalle-centro">
             <h2 id="producto-nombre">Nombre del Producto</h2>
-            <div id="producto-calificaciones" class="estrellas">
-                <!-- Calificaciones dinámicas con estrellas -->
-            </div>
+            <div id="producto-calificaciones" class="estrellas"></div>
             <p id="producto-precio">Precio: $0.00</p>
             <p id="producto-stock"></p>
-            <p id="cupon-disponible"></p>
         </div>
-
-        <!-- Botones, combobox y descripción a la derecha -->
         <div class="detalle-derecha">
             <div class="compra-opciones">
                 <label for="cantidad">Cantidad:</label>
                 <select id="cantidad" name="cantidad"></select>
-                <button onclick="agregarAlCarrito(1, null, null, 1)">Agregar al carrito</button>
+                <button onclick="agregarAlCarrito()">Agregar al carrito</button>
                 <button onclick="comprarAhora()">Comprar Ahora</button>
             </div>
             <div class="descripcion">
@@ -77,38 +70,50 @@
     </main>
 
     <script>
-    function agregarAlCarrito(productoId) {
-    const formData = new FormData();
-    formData.append("productoId", productoId);
-    formData.append("cantidad", 1); // Asumimos que agregas 1 unidad por defecto
+        function agregarAlCarrito() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productoId = parseInt(urlParams.get('id'), 10);
+            const cantidad = parseInt(document.getElementById('cantidad').value, 10);
 
-    fetch("/agregarAlCarrito", {  // Aquí cambias la URL
-        method: "POST",
-        body: formData
-    })
-    .then(response => {
-        if (response.ok) {
-            alert("Producto agregado al carrito.");
-            // Opcional: Recargar el carrito o actualizarlo visualmente
-        } else {
-            alert("Error al agregar el producto al carrito.");
+            console.log("Producto ID:", productoId, "Cantidad:", cantidad);
+
+            if (!productoId || productoId <= 0 || !cantidad || cantidad <= 0) {
+                alert("Producto o cantidad no válidos.");
+                return;
+            }
+
+            const payload = {
+                productoId: productoId,
+                cantidad: cantidad
+            };
+
+            fetch("/Panaderia/agregarAlCarrito", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(response => response.json().then(data => ({ status: response.status, body: data })))
+                .then(({ status, body }) => {
+                    if (status === 200) {
+                        alert(body.message || "Producto agregado al carrito exitosamente.");
+                    } else {
+                        alert(`Error (${status}): ${body.message}`);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error al agregar al carrito:", error);
+                    alert("Hubo un problema al agregar el producto al carrito.");
+                });
         }
-    })
-    .catch(error => console.error("Error:", error));
-}
-    
-// Función para simular la compra directa
-function comprarAhora() {
-    // Aquí podrías tener lógica adicional para un proceso de compra rápido
-    // Esto agrega un producto "paseo" al carrito con una cantidad de 1
-    agregarAlCarrito(1, 1);
-    window.location.href = 'carrito.jsp'; // Redirige directamente al carrito
-}
-    </script>
-    
-    <script>
+
+        function comprarAhora() {
+            agregarAlCarrito();
+            window.location.href = 'carrito.jsp';
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
-            // Obtener el ID del producto desde la URL
             const urlParams = new URLSearchParams(window.location.search);
             const productoId = urlParams.get('id');
             
@@ -121,18 +126,9 @@ function comprarAhora() {
                         document.getElementById('producto-precio').textContent = `Precio: $${data.precio}`;
                         document.getElementById('producto-stock').textContent = `Stock: ${data.stock} piezas`;
                         document.getElementById('producto-descripcion').textContent = data.descripcion;
-                        document.getElementById('cupon-disponible').textContent = data.cuponDisponible ? 'Cupón disponible: Sí' : 'Cupón disponible: No';
 
-                        // Mostrar estrellas de calificación
-                        const calificacionesContainer = document.getElementById('producto-calificaciones');
-                        for (let i = 1; i <= 5; i++) {
-                            const estrella = document.createElement('span');
-                            estrella.textContent = i <= data.calificacion ? '★' : '☆';
-                            calificacionesContainer.appendChild(estrella);
-                        }
-
-                        // Generar opciones en el combobox de cantidad
                         const selectCantidad = document.getElementById('cantidad');
+                        selectCantidad.innerHTML = "";
                         for (let i = 1; i <= data.stock; i++) {
                             const option = document.createElement('option');
                             option.value = i;
@@ -142,34 +138,6 @@ function comprarAhora() {
                     })
                     .catch(error => console.error("Error al cargar los detalles del producto:", error));
             }
-
-            // Validar la cantidad seleccionada
-            document.getElementById('cantidad').addEventListener('change', function() {
-                const cantidadSeleccionada = parseInt(this.value);
-                const stock = parseInt(document.getElementById('producto-stock').textContent.split(" ")[2]);
-                if (cantidadSeleccionada > stock) {
-                    alert('La cantidad seleccionada excede el stock disponible.');
-                }
-            });
-
-            // Eventos de botones
-            document.getElementById('agregar-carrito').addEventListener('click', function() {
-                // Lógica para agregar al carrito
-            });
-            document.getElementById('comprar-ahora').addEventListener('click', function() {
-                // Lógica para la compra inmediata
-            });
-        });
-    </script>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch("MenuUsuarioServlet")
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById("menu-usuario").innerHTML = html;
-                })
-                .catch(error => console.error("Error al cargar el menú:", error));
         });
     </script>
 </body>

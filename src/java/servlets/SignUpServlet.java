@@ -1,40 +1,80 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import utils.Usuario;
-import utils.UsuarioDAO;
 
 public class SignUpServlet extends HttpServlet {
+    private static final String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=panaderia";
+    private static final String DB_USER = "User_AntonioO"; 
+    private static final String DB_PASSWORD = "tellez08"; 
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String nombre = request.getParameter("nombre");
-        String correo = request.getParameter("correo");
-        String usuario = request.getParameter("usuario");
-        String password = request.getParameter("password");
+        String nombreCompleto = request.getParameter("nombre");
+        String correoElectronico = request.getParameter("correo");
+        String nombreUsuario = request.getParameter("usuario");
+        String contrasena = request.getParameter("password");
 
-        // Verificar si el nombre de usuario ya existe
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        boolean existeUsuario = usuarioDAO.existeUsuario(usuario);
+        Connection conn = null;
+        PreparedStatement checkStmt = null;
+        PreparedStatement insertStmt = null;
 
-        if (!existeUsuario) {
-            // Si no existe, registrar el nuevo usuario
-            Usuario nuevoUsuario = new Usuario(nombre, correo, usuario, password);
-            usuarioDAO.registrarUsuario(nuevoUsuario);
+        try {
+            // Conexión a la base de datos
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-            // Crear una sesión para el usuario registrado
-            HttpSession session = request.getSession();
-            session.setAttribute("usuario", nuevoUsuario);
+            // Verificar si el nombre de usuario o correo ya existe
+            String checkQuery = "SELECT COUNT(*) FROM Usuarios WHERE nombre_usuario = ? OR correo_electronico = ?";
+            checkStmt = conn.prepareStatement(checkQuery);
+            checkStmt.setString(1, nombreUsuario);
+            checkStmt.setString(2, correoElectronico);
 
-            // Redirigir a la página principal
-            response.sendRedirect("header.html"); // Cambia a header.jsp
-        } else {
-            // Redirigir a signup.html si el usuario ya existe
-            response.sendRedirect("SignUp.html?error=usuarioExiste");
+            ResultSet rs = checkStmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+
+            if (count > 0) {
+                // Si el usuario o correo ya existe, redirigir a la página de registro con error
+                response.sendRedirect("SignUp.html?error=usuarioExiste");
+            } else {
+                // Insertar el nuevo usuario
+                String insertQuery = "INSERT INTO Usuarios (nombre_completo, correo_electronico, nombre_usuario, contraseña, tipo_usuario) VALUES (?, ?, ?, ?, ?)";
+                insertStmt = conn.prepareStatement(insertQuery);
+                insertStmt.setString(1, nombreCompleto);
+                insertStmt.setString(2, correoElectronico);
+                insertStmt.setString(3, nombreUsuario);
+                insertStmt.setString(4, contrasena); // Asegúrate de usar un hash para almacenar contraseñas
+                insertStmt.setInt(5, 1); // Tipo de usuario por defecto
+
+                insertStmt.executeUpdate();
+
+                // Crear sesión para el nuevo usuario
+                HttpSession session = request.getSession();
+                session.setAttribute("usuario", nombreUsuario);
+
+                // Redirigir al header o página principal
+                response.sendRedirect("header.html");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("SignUp.html?error=errorServidor");
+        } finally {
+            try {
+                if (checkStmt != null) checkStmt.close();
+                if (insertStmt != null) insertStmt.close();
+                if (conn != null) conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

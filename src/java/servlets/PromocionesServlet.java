@@ -21,7 +21,7 @@ import utils.Promocion;
 
 @WebServlet("/obtenerPromociones")
 public class PromocionesServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L ;
+    private static final long serialVersionUID = 1L;
 
     private Connection conn;
 
@@ -42,7 +42,14 @@ public class PromocionesServlet extends HttpServlet {
         try (PreparedStatement statement = conn.prepareStatement("SELECT * FROM Promociones")) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    Promocion promocion = new Promocion();
+                    Promocion promocion = new Promocion(
+                        resultSet.getInt("id"),
+                        resultSet.getString("nombre"),
+                        resultSet.getString("descripcion"),
+                        resultSet.getDouble("descuento"),
+                        resultSet.getDate("fecha_inicio"),
+                        resultSet.getDate("fecha_fin")
+                    );
                     promocion.setId(resultSet.getInt("id"));
                     promocion.setNombre(resultSet.getString("nombre"));
                     promocion.setDescripcion(resultSet.getString("descripcion"));
